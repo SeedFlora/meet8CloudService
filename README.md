@@ -42,4 +42,3 @@ Rujukan: [Next.js installation](https://nextjs.org/docs/app/getting-started/inst
 `npm run check:local` memerlukan Next.js dan API Lab 06 aktif; jalankan pada terminal kedua sebelum menghentikan `npm run dev`. Hasil uji lokal: **9 PASS, 0 FAIL**. `/api/health` memeriksa Next saja; `/api/ready` ikut memeriksa kesehatan Lab 06. Gunakan `http://localhost:3000` untuk browser dev lokal.
 
 Panduan: [modul mahasiswa dan kunci](MODUL_MAHASISWA.md), [panduan dosen](PANDUAN_DOSEN.md), [panduan Git](PANDUAN_GIT.md). Screenshot ada di `screenshots/`; laporan pribadi memakai `hasil/TEMPLATE_LAPORAN.md`.
-
