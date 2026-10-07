@@ -1,0 +1,22 @@
+$ node --version
+v24.13.1
+[exit 0]
+
+$ npm --version
+11.8.0
+[exit 0]
+
+$ if (Test-Path -LiteralPath '.\.env.local') { '.env.local: tersedia' } else { '.env.local: BELUM ADA' }; git check-ignore -v .env.local
+.env.local: tersedia
+.gitignore:2:.env.local	.env.local
+[exit 0]
+
+$ $r = Invoke-WebRequest http://localhost:3000/api/health -UseBasicParsing; 'GET /api/health: HTTP ' + $r.StatusCode; $r.Content
+GET /api/health: HTTP 200
+{"status":"ok","service":"cloud-notes-web"}
+[exit 0]
+
+$ $r = Invoke-WebRequest http://localhost:3000/api/ready -UseBasicParsing; 'GET /api/ready: HTTP ' + $r.StatusCode; $r.Content
+GET /api/ready: HTTP 200
+{"status":"ready","dependency":"lab06-api"}
+[exit 0]

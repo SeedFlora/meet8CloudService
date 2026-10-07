@@ -1,0 +1,9 @@
+$ rg -n 'use client|fetch|LOCAL_API_URL|export async function' src/app/page.tsx src/app/api/notes/route.ts
+src/app/api/notes/route.ts:4:const baseUrl = process.env.LOCAL_API_URL || 'http://127.0.0.1:8000'
+src/app/api/notes/route.ts:10:    const upstream = await fetch(`${baseUrl}/notes`, {
+src/app/api/notes/route.ts:32:export async function GET() {
+src/app/api/notes/route.ts:36:export async function POST(request: Request) {
+src/app/page.tsx:1:'use client'
+src/app/page.tsx:27:      const response = await fetch('/api/notes', { cache: 'no-store' })
+src/app/page.tsx:58:        const response = await fetch('/api/notes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, content }) })
+[exit 0]

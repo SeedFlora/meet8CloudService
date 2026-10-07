@@ -1,0 +1,29 @@
+$ git status --short
+M next-env.d.ts
+?? screenshots/13_npm_ci.png
+?? screenshots/13_npm_ci.txt
+?? screenshots/14_setup_runtime.png
+?? screenshots/14_setup_runtime.txt
+?? screenshots/15_source_tour.png
+?? screenshots/15_source_tour.txt
+?? screenshots/16_post_request_id.png
+?? screenshots/16_post_request_id.txt
+?? screenshots/17_validasi_aktual.png
+?? screenshots/17_validasi_aktual.txt
+?? screenshots/18_outage_probe.png
+?? screenshots/18_outage_probe.txt
+?? screenshots/19_pemulihan.png
+?? screenshots/19_pemulihan.txt
+?? screenshots/21_build_aktual.png
+?? screenshots/21_build_aktual.txt
+[exit 0]
+
+$ git check-ignore -v .env.local node_modules .next
+.gitignore:2:.env.local	.env.local
+.gitignore:4:node_modules/	node_modules
+.gitignore:5:.next/	.next
+[exit 0]
+
+$ git diff --cached --check; if ($LASTEXITCODE -eq 0) { 'Staged diff: tidak ada whitespace error (exit 0)' }
+Staged diff: tidak ada whitespace error (exit 0)
+[exit 0]

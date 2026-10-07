@@ -1,0 +1,9 @@
+$ $r = Invoke-WebRequest http://localhost:3000/api/ready -UseBasicParsing; 'GET /api/ready: HTTP ' + $r.StatusCode; $r.Content
+GET /api/ready: HTTP 200
+{"status":"ready","dependency":"lab06-api"}
+[exit 0]
+
+$ $r = Invoke-WebRequest http://localhost:3000/api/notes -UseBasicParsing; 'GET /api/notes: HTTP ' + $r.StatusCode; if ($r.Content -match 'Audit bukti Lab08') { 'Catatan lama: tetap ada setelah API hidup kembali' } else { 'Catatan lama: TIDAK ditemukan' }
+GET /api/notes: HTTP 200
+Catatan lama: tetap ada setelah API hidup kembali
+[exit 0]

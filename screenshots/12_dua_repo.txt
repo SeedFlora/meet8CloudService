@@ -1,0 +1,11 @@
+$ 'Repo Lab 08: ' + (Get-Location).Path; git remote -v
+Repo Lab 08: D:\cloud services\Cloud_Services_All_Labs_Siap_Push\labs\08
+origin	https://github.com/SeedFlora/meet8CloudService.git (fetch)
+origin	https://github.com/SeedFlora/meet8CloudService.git (push)
+[exit 0]
+
+$ 'Repo Lab 06: ' + (Resolve-Path '..\06').Path; git -C '..\06' remote -v
+Repo Lab 06: D:\cloud services\Cloud_Services_All_Labs_Siap_Push\labs\06
+origin	https://github.com/SeedFlora/meet6CloudService.git (fetch)
+origin	https://github.com/SeedFlora/meet6CloudService.git (push)
+[exit 0]

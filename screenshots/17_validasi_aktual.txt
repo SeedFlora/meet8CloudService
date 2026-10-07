@@ -1,0 +1,9 @@
+$ try { Invoke-WebRequest http://localhost:3000/api/notes -Method Post -ContentType application/json -Body '{"content":"uji"}' -UseBasicParsing } catch { 'POST tanpa title: HTTP ' + [int]$_.Exception.Response.StatusCode; $stream = $_.Exception.Response.GetResponseStream(); if ($stream) { (New-Object System.IO.StreamReader($stream)).ReadToEnd() } }
+POST tanpa title: HTTP 400
+{"error":"Judul dan isi wajib diisi"}
+[exit 0]
+
+$ try { Invoke-WebRequest http://localhost:3000/api/notes -Method Post -ContentType application/json -Body '{' -UseBasicParsing } catch { 'POST JSON rusak: HTTP ' + [int]$_.Exception.Response.StatusCode; $stream = $_.Exception.Response.GetResponseStream(); if ($stream) { (New-Object System.IO.StreamReader($stream)).ReadToEnd() } }
+POST JSON rusak: HTTP 400
+{"error":"JSON tidak valid"}
+[exit 0]

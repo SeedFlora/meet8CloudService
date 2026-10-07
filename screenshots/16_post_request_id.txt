@@ -1,0 +1,10 @@
+$ $r = Invoke-WebRequest http://localhost:3000/api/notes -Method Post -ContentType application/json -Body '{"title":"Audit bukti Lab08","content":"Jalur empat lapisan berhasil"}' -UseBasicParsing; 'POST /api/notes: HTTP ' + $r.StatusCode; 'X-Request-ID: ' + $r.Headers['X-Request-ID']; $r.Content
+POST /api/notes: HTTP 201
+X-Request-ID: 783d48a8-67e0-4c6d-90ab-ed708448df11
+{"id":6,"title":"Audit bukti Lab08","content":"Jalur empat lapisan berhasil","created_at":"2026-10-07T15:11:43.844136+00:00"}
+[exit 0]
+
+$ $r = Invoke-WebRequest http://localhost:3000/api/notes -UseBasicParsing; 'GET /api/notes: HTTP ' + $r.StatusCode; if ($r.Content -match 'Audit bukti Lab08') { 'Judul Audit bukti Lab08: ditemukan dalam respons' } else { 'Judul: TIDAK ditemukan' }
+GET /api/notes: HTTP 200
+Judul Audit bukti Lab08: ditemukan dalam respons
+[exit 0]

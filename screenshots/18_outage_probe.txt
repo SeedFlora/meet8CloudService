@@ -1,0 +1,12 @@
+$ $r = Invoke-WebRequest http://localhost:3000/api/health -UseBasicParsing; 'GET /api/health: HTTP ' + $r.StatusCode; $r.Content
+GET /api/health: HTTP 200
+{"status":"ok","service":"cloud-notes-web"}
+[exit 0]
+
+$ try { Invoke-WebRequest http://localhost:3000/api/ready -UseBasicParsing } catch { 'GET /api/ready: HTTP ' + [int]$_.Exception.Response.StatusCode }
+GET /api/ready: HTTP 503
+[exit 0]
+
+$ try { Invoke-WebRequest http://localhost:3000/api/notes -UseBasicParsing } catch { 'GET /api/notes: HTTP ' + [int]$_.Exception.Response.StatusCode }
+GET /api/notes: HTTP 503
+[exit 0]
