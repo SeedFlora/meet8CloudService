@@ -1,6 +1,8 @@
 # Modul Mahasiswa Lab 08 — Cloud Notes dengan Next.js
 
-**Sesi RPS:** 8 · **Mode utama:** lokal · **Hasil yang dikumpulkan:** source, laporan, screenshot hasil sendiri, dan commit Git.
+**Kebijakan kelas:** Lab ini latihan formatif, tanpa tugas, nilai, atau penyerahan terpisah. Satu proyek besar dikerjakan oleh kelompok **3 orang**, dengan presentasi checkpoint minggu 7 (UTS) dan hasil akhir minggu 14 (UAS). Simpan hasil lab hanya bila berguna sebagai referensi atau bukti proses proyek. Baca [brief proyek kelompok](PROYEK_KELOMPOK.md). Bobot resmi tetap mengikuti RPS/LMS.
+
+**Sesi RPS:** 8 · **Mode utama:** lokal · **Bukti latihan opsional untuk proyek:** source, laporan, screenshot hasil sendiri, dan commit Git.
 
 ## Tujuan dan konsep
 
@@ -71,7 +73,7 @@ Di Bash, gunakan `curl -i http://localhost:3000/api/notes -H 'Content-Type: appl
 
 * **Langkah:** Jalankan `npm run dev` dari root repo Lab 08, lalu buka `http://localhost:3000/api/health`. **Fungsi:** Memeriksa Route Handler Next.js sebelum membuat catatan. **Cara kerja:** Next.js memproses GET pada server dan mengirim status/JSON; pemeriksaan API Lab 06 dilakukan terpisah. **Baca hasil:** Baca HTTP 200 dan JSON health; jangan menyimpulkan backend DB sehat hanya dari halaman ini.
 
-**Langkah 3 — form dan catatan di web.** Setelah tombol **Simpan**, catatan terlihat pada daftar. Screenshot contoh ini berasal dari praktik lokal; kumpulkan hasil Anda sendiri.
+**Langkah 3 — form dan catatan di web.** Setelah tombol **Simpan**, catatan terlihat pada daftar. Screenshot contoh ini berasal dari praktik lokal; simpan hasil Anda sendiri bila berguna untuk proyek.
 
 ![Tampilan Cloud Notes dengan form dan daftar catatan](screenshots/lab08_ui.png)
 
@@ -95,7 +97,7 @@ Di Bash, gunakan `curl -i http://localhost:3000/api/notes -H 'Content-Type: appl
 
 **Jalur cloud opsional:** ikuti [README Lab 08](README.md) untuk menjalankan `schema.sql` Lab 07 di Supabase, memasukkan URL dan *publishable key* pada `.env.local`, menguji dua akun, lalu mengimpor root repo Lab 08 ke Vercel dari repo Git. Jangan memakai `LOCAL_API_URL=localhost` pada deployment publik. `NEXT_PUBLIC_` hanya untuk nilai yang memang boleh dilihat browser; jangan menaruh service role/secret key di sana.
 
-Paket ini belum berisi screenshot hasil deploy Supabase/Vercel karena jalur cloud memerlukan proyek dan akun peserta. Jika mengerjakannya, kumpulkan screenshot project setting yang tidak menampilkan key rahasia, URL deploy, serta uji dua akun dari proyek Anda sendiri.
+Paket ini belum berisi screenshot hasil deploy Supabase/Vercel karena jalur cloud memerlukan proyek dan akun peserta. Jika mengerjakannya, simpan screenshot project setting yang tidak menampilkan key rahasia, URL deploy, serta uji dua akun dari proyek Anda sendiri.
 
 ## Pertanyaan untuk laporan
 
@@ -176,7 +178,7 @@ Kasus: staf menekan **Simpan** tetapi daftar catatan tidak berubah. Tugas Anda m
 3. `NEXT_PUBLIC_` dibundel ke browser. URL Supabase dan publishable key dirancang untuk client dengan RLS; service role/secret key memberi hak lebih luas dan harus tetap di server/secret store. Uji RLS dua akun pada jalur cloud bila tersedia.
 4. Daftar catatan per pengguna tidak cocok dijadikan halaman statis bersama. Mode lokal ini memakai Client Component dan request tanpa cache. SSR bisa dipakai bila auth dan data diambil per request pada server; SSG/ISR hanya cocok untuk konten publik yang aman dibagikan dan tidak berubah per pengguna.
 
-**Bukti yang dikumpulkan:** screenshot browser milik Anda sebelum/sesudah simpan, status 400 dan 503, hasil pulih 200, satu `X-Request-ID` yang cocok dengan log, 9 PASS, build sukses, dan jawaban alur request. Nilai contoh pada screenshot di atas berasal dari uji lokal dan dapat berbeda pada mesin Anda.
+**Bukti latihan yang boleh disimpan untuk proyek:** screenshot browser milik Anda sebelum/sesudah simpan, status 400 dan 503, hasil pulih 200, satu `X-Request-ID` yang cocok dengan log, 9 PASS, build sukses, dan jawaban alur request. Nilai contoh pada screenshot di atas berasal dari uji lokal dan dapat berbeda pada mesin Anda.
 
 
 ![Docker Desktop backend Lab 06 untuk Lab 08](screenshots/08_lab06_docker_desktop.jpg)

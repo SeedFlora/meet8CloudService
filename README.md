@@ -1,5 +1,17 @@
 # Lab 08 — Next.js + Vercel + Supabase
 
+<!-- lecture-materials:start -->
+
+## Materi teori sebelum praktikum
+
+- [Pertemuan 08: Vercel](slides/Teori_Pertemuan_08.pptx)
+
+Slide menghubungkan konsep, kasus kerja, bacaan/video resmi, dan langkah lab.
+
+<!-- lecture-materials:end -->
+
+**Kebijakan kelas:** Lab ini latihan formatif, tanpa tugas, nilai, atau penyerahan terpisah. Satu proyek besar dikerjakan oleh kelompok **3 orang**, dengan presentasi checkpoint minggu 7 (UTS) dan hasil akhir minggu 14 (UAS). Simpan hasil lab hanya bila berguna sebagai referensi atau bukti proses proyek. Baca [brief proyek kelompok](PROYEK_KELOMPOK.md). Bobot resmi tetap mengikuti RPS/LMS.
+
 **Capaian:** membangun App Router, membedakan kode browser dan server, membuat Route Handler GET/POST, menghubungkan BaaS memakai publishable key, serta mendemonstrasikan deploy otomatis dari Git. Kode yang sama bisa dicoba tanpa akun cloud.
 
 ## Jalur lokal tanpa akun
@@ -41,4 +53,4 @@ Rujukan: [Next.js installation](https://nextjs.org/docs/app/getting-started/inst
 
 `npm run check:local` memerlukan Next.js dan API Lab 06 aktif; jalankan pada terminal kedua sebelum menghentikan `npm run dev`. Hasil uji lokal: **9 PASS, 0 FAIL**. `/api/health` memeriksa Next saja; `/api/ready` ikut memeriksa kesehatan Lab 06. Gunakan `http://localhost:3000` untuk browser dev lokal.
 
-Panduan: [modul mahasiswa dan kunci](MODUL_MAHASISWA.md), [panduan dosen](PANDUAN_DOSEN.md), [panduan Git](PANDUAN_GIT.md). Screenshot ada di `screenshots/`; laporan pribadi memakai `hasil/TEMPLATE_LAPORAN.md`.
+Panduan: [modul mahasiswa dan kunci](MODUL_MAHASISWA.md), [panduan Git](PANDUAN_GIT.md). Screenshot ada di `screenshots/`; laporan pribadi memakai `hasil/TEMPLATE_LAPORAN.md`.
