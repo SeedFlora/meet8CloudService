@@ -14,7 +14,7 @@ Contoh Todo pada slide sesi 8 menjelaskan pola Next.js. Praktik yang dapat dijal
 
 ## Persiapan
 
-- Node.js **minimal 20.9**, Docker dan Compose, serta [repo Lab 06](https://github.com/SeedFlora/meet6CloudService) yang sehat pada `http://127.0.0.1:8000/health`.
+- Node.js **minimal 22.0.0** untuk versi paket pada `package-lock.json` repo ini, Docker dan Compose, serta [repo Lab 06](https://github.com/SeedFlora/meet6CloudService) yang sehat pada `http://127.0.0.1:8000/health`. Next.js sendiri menerima Node 20.9+, tetapi dependensi `@supabase/supabase-js` yang terkunci di proyek ini mensyaratkan Node 22+; ikuti kebutuhan seluruh proyek dan [dukungan runtime Supabase](https://supabase.com/changelog/45715-deprecation-notice-dropping-support-for-node-js-20).
 - Port 3000 belum dipakai proses lain. Hentikan server Lab 01/03 bila masih hidup.
 - Dari root repo Lab 06, siapkan secret contoh lokal sesuai README dan jalankan `docker compose up --build -d --wait`. Jangan commit file `.env` atau password nyata.
 
@@ -26,12 +26,15 @@ Dari root repo Lab 08, jalankan PowerShell:
 
 ```powershell
 node --version
+npm --version
 npm ci
 Copy-Item .\.env.example .\.env.local
 npm run dev
 ```
 
 Pada Bash/WSL, gunakan `cp .env.example .env.local`. Jika `.env.local` sudah ada, periksa isinya sebelum menyalin ulang. Buka `http://localhost:3000` dan `http://localhost:3000/api/health`.
+
+**Checkpoint runtime:** `node --version` harus menunjukkan `v22.0.0` atau lebih baru dan `npm --version` harus menampilkan nomor versi. Jika Node masih 20.x atau muncul `EBADENGINE` ketika `npm ci`, siapkan Node 22+ pada lingkungan praktik, buka kembali terminal, lalu ulangi kedua pemeriksaan sebelum instalasi paket.
 
 ![Instalasi paket Node dari lockfile berhasil](screenshots/13_npm_ci.png)
 
