@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { logEvent } from '@/lib/logger'
 
-const baseUrl = process.env.LOCAL_API_URL || 'http://127.0.0.1:8000'
+const baseUrl = process.env.LOCAL_API_URL || 'http://127.0.0.1:18006'
 
 async function forward(method: 'GET' | 'POST', body?: string) {
   const started = Date.now()

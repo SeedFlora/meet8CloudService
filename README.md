@@ -16,7 +16,7 @@ Slide menghubungkan konsep, kasus kerja, bacaan/video resmi, dan langkah lab.
 
 ## Jalur lokal tanpa akun
 
-1. Clone [repo Lab 06](https://github.com/SeedFlora/meet6CloudService) di komputer/Codespace **yang sama** dan jalankan Compose dari root repo itu (`docker compose up --build -d --wait`). `localhost` pada dua Codespace terpisah tidak saling terhubung.
+1. Clone [repo Lab 06](https://github.com/SeedFlora/meet6CloudService) di komputer/Codespace **yang sama**, siapkan `.env` dari `.env.example` sesuai README Lab 06, lalu jalankan Compose dari root repo itu (`docker compose up --build -d --wait`). `localhost` pada dua Codespace terpisah tidak saling terhubung.
 2. Dari root repo Lab 08 ini, pastikan Node.js minimal **22.0.0**, lalu:
 
 ```bash
@@ -27,7 +27,9 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Pada PowerShell, ganti baris `cp` dengan `Copy-Item .\.env.example .\.env.local`. Buka `http://localhost:3000`, buat catatan, lalu lihat data lewat `http://127.0.0.1:8000/notes`. Route Handler `/api/notes` meneruskan request ke API Lab 06 dari sisi server, sehingga browser tidak perlu mengakses network Compose langsung.
+Pada PowerShell, ganti baris `cp` dengan `Copy-Item .\.env.example .\.env.local`. Buka `http://localhost:3000`, buat catatan, lalu lihat data lewat `http://127.0.0.1:18006/notes`. Route Handler `/api/notes` meneruskan request ke API Lab 06 dari sisi server, sehingga browser tidak perlu mengakses network Compose langsung.
+
+Revisi lokal Lab 06 memakai port **18006**. Nilai `LOCAL_API_URL` pada `.env.local` harus `http://127.0.0.1:18006`; contoh baru dan default Route Handler sudah sesuai. Sesuaikan nilai pada `.env.local` yang telah ada, lalu hentikan dan jalankan kembali server Next.js setelah perubahan konfigurasi.
 
 Kebutuhan Node 22+ berasal dari `@supabase/supabase-js` pada `package-lock.json` proyek ini; minimum Next.js saja adalah 20.9+. Lihat [dukungan runtime Supabase](https://supabase.com/changelog/45715-deprecation-notice-dropping-support-for-node-js-20). Periksa `node --version` menunjukkan `v22.0.0` atau lebih baru dan `npm --version` berhasil sebelum `npm ci`. Jika muncul `EBADENGINE`, perbarui runtime lingkungan praktik dan buka kembali terminal sebelum mencoba instalasi lagi.
 

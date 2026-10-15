@@ -14,13 +14,15 @@ Contoh Todo pada slide sesi 8 menjelaskan pola Next.js. Praktik yang dapat dijal
 
 ## Persiapan
 
-- Node.js **minimal 22.0.0** untuk versi paket pada `package-lock.json` repo ini, Docker dan Compose, serta [repo Lab 06](https://github.com/SeedFlora/meet6CloudService) yang sehat pada `http://127.0.0.1:8000/health`. Next.js sendiri menerima Node 20.9+, tetapi dependensi `@supabase/supabase-js` yang terkunci di proyek ini mensyaratkan Node 22+; ikuti kebutuhan seluruh proyek dan [dukungan runtime Supabase](https://supabase.com/changelog/45715-deprecation-notice-dropping-support-for-node-js-20).
+- Node.js **minimal 22.0.0** untuk versi paket pada `package-lock.json` repo ini, Docker dan Compose, serta [repo Lab 06](https://github.com/SeedFlora/meet6CloudService) yang sehat pada `http://127.0.0.1:18006/health`. Next.js sendiri menerima Node 20.9+, tetapi dependensi `@supabase/supabase-js` yang terkunci di proyek ini mensyaratkan Node 22+; ikuti kebutuhan seluruh proyek dan [dukungan runtime Supabase](https://supabase.com/changelog/45715-deprecation-notice-dropping-support-for-node-js-20).
 - Port 3000 belum dipakai proses lain. Hentikan server Lab 01/03 bila masih hidup.
-- Dari root repo Lab 06, siapkan secret contoh lokal sesuai README dan jalankan `docker compose up --build -d --wait`. Jangan commit file `.env` atau password nyata.
+- Dari root repo Lab 06, siapkan `.env` dari `.env.example` sesuai README revisi lokal dan jalankan `docker compose up --build -d --wait`. File secret terpisah tidak dipakai pada revisi ini. Jangan commit file `.env` atau password nyata.
+
+**Port API revisi lokal:** `LOCAL_API_URL` pada `.env.local` Lab 08 memakai `http://127.0.0.1:18006`. Sesuaikan file konfigurasi yang sudah ada, lalu hentikan dan jalankan kembali server Next.js. Screenshot acuan yang menampilkan API pada port 8000 berasal dari pengujian versi sebelumnya; gunakan port 18006 untuk langkah dan pemeriksaan sekarang.
 
 ![Dua repo Lab 06 dan 08 berada pada satu komputer](screenshots/12_dua_repo.png)
 
-*Langkah: clone `meet6CloudService` dan `meet8CloudService` pada satu komputer/Codespace, lalu jalankan `git remote -v` di masing-masing folder. Fungsi: memastikan Next dapat memanggil API pada `localhost:8000`. Cara kerja: kedua proses memakai jaringan host yang sama; dua Codespace terpisah memiliki `localhost` berbeda. Baca hasil: remote Lab 06 dan Lab 08 menuju repo yang berbeda, dengan folder kerja berdampingan. [Output lengkap](screenshots/12_dua_repo.txt).*
+*Langkah: clone `meet6CloudService` dan `meet8CloudService` pada satu komputer/Codespace, lalu jalankan `git remote -v` di masing-masing folder. Fungsi: memastikan Next dapat memanggil API pada `localhost:18006`. Cara kerja: kedua proses memakai jaringan host yang sama; dua Codespace terpisah memiliki `localhost` berbeda. Baca hasil: remote Lab 06 dan Lab 08 menuju repo yang berbeda, dengan folder kerja berdampingan. [Output lengkap historis](screenshots/12_dua_repo.txt).*
 
 Dari root repo Lab 08, jalankan PowerShell:
 
@@ -46,13 +48,13 @@ Pada Bash/WSL, gunakan `cp .env.example .env.local`. Jika `.env.local` sudah ada
 
 ![Backend Lab 06 sehat sebelum Next.js diuji](screenshots/lab06_compose.png)
 
-*Langkah: dari repo Lab 06 jalankan `docker compose up --build -d --wait` dan `docker compose ps`. Fungsi: menyediakan API, PostgreSQL, dan Redis. Cara kerja: Compose menunggu healthcheck dan memetakan API ke port host 8000. Baca hasil: tiga service sehat; hanya lanjutkan ketika `/health` Lab 06 merespons.*
+*Langkah: dari repo Lab 06 jalankan `docker compose up --build -d --wait` dan `docker compose ps`. Fungsi: menyediakan API, PostgreSQL, dan Redis. Cara kerja: Compose menunggu healthcheck. Screenshot historis memakai host port 8000; revisi lokal sekarang memakai 18006. Baca hasil: tiga service sehat; hanya lanjutkan ketika `/health` Lab 06 merespons.*
 
 ## Praktik bertahap
 
 1. **Kenali komponen.** Buka `src/app/page.tsx` dan `src/app/api/notes/route.ts`. Tandai `'use client'`, event form, `fetch('/api/notes')`, serta `LOCAL_API_URL` yang hanya dibaca server. Untuk menemukan barisnya cepat, jalankan `rg -n 'use client|fetch|LOCAL_API_URL|export async function' src/app/page.tsx src/app/api/notes/route.ts` dari root repo (atau `Select-String` pada PowerShell jika `rg` tidak terpasang). Catat aliran browser → Next Route Handler → API Lab 06 → PostgreSQL.
 2. **Uji pembacaan.** Buka halaman dan cek label `Mode aktif: API lokal`. Refresh daftar. Dari terminal kedua, jalankan `Invoke-RestMethod http://localhost:3000/api/health` (PowerShell) atau `curl -fsS http://localhost:3000/api/health` (Bash). Harapkan HTTP 200.
-3. **Tulis catatan.** Isi judul dan isi, klik **Simpan**, lalu pastikan catatan tampak pada daftar. Cocokkan dengan `http://127.0.0.1:8000/notes`. Amati terminal Next.js: log JSON `notes_proxy` memuat `requestId`, status, dan durasi tanpa isi catatan.
+3. **Tulis catatan.** Isi judul dan isi, klik **Simpan**, lalu pastikan catatan tampak pada daftar. Cocokkan dengan `http://127.0.0.1:18006/notes`. Amati terminal Next.js: log JSON `notes_proxy` memuat `requestId`, status, dan durasi tanpa isi catatan.
 4. **Uji validasi.** Kirim body tanpa judul ke `/api/notes`; Route Handler seharusnya mengembalikan HTTP 400. Di PowerShell, jalankan perintah berikut dari terminal kedua:
 
 ```powershell
@@ -140,7 +142,7 @@ Pada Windows, `npm ci` dapat gagal dengan `EPERM`/`ENOTEMPTY` jika proses Next l
 
 Kasus: staf menekan **Simpan** tetapi daftar catatan tidak berubah. Tugas Anda menelusuri browser → Next.js → API Lab 06 → PostgreSQL, membedakan input salah dari layanan mati, lalu menunjukkan bukti pulih. Lab 06 berada di repo terpisah [SeedFlora/meet6CloudService](https://github.com/SeedFlora/meet6CloudService). Jalankan Lab 06 dan Lab 08 pada **komputer/Codespace yang sama**: `localhost` di dua Codespace berbeda tidak saling terhubung. Buka terminal pertama di clone Lab 06 untuk `docker compose up --build -d --wait`, lalu terminal kedua di root repo Lab 08 untuk `npm run dev`.
 
-1. **Buktikan lapisan hidup.** Di terminal ketiga jalankan `curl -i http://localhost:3000/api/health`, `curl -i http://localhost:3000/api/ready`, dan `curl -i http://127.0.0.1:8000/health` (Bash). Di PowerShell gunakan `Invoke-WebRequest` untuk URL yang sama. `/api/health` memeriksa Next saja; `/api/ready` memanggil health API Lab 06 yang juga memeriksa PostgreSQL/Redis. Saat semua sehat, ketiganya HTTP 200. Bila browser membuka mode dev lokal, gunakan `http://localhost:3000`; endpoint dari terminal boleh memakai `127.0.0.1`.
+1. **Buktikan lapisan hidup.** Di terminal ketiga jalankan `curl -i http://localhost:3000/api/health`, `curl -i http://localhost:3000/api/ready`, dan `curl -i http://127.0.0.1:18006/health` (Bash). Di PowerShell gunakan `Invoke-WebRequest` untuk URL yang sama. `/api/health` memeriksa Next saja; `/api/ready` memanggil health API Lab 06 yang juga memeriksa PostgreSQL/Redis. Saat semua sehat, ketiganya HTTP 200. Bila browser membuka mode dev lokal, gunakan `http://localhost:3000`; endpoint dari terminal boleh memakai `127.0.0.1`.
 2. **Bedakan validasi dari kegagalan backend.** PowerShell: `try { Invoke-RestMethod http://localhost:3000/api/notes -Method Post -ContentType application/json -Body '{"content":"uji"}' } catch { [int]$_.Exception.Response.StatusCode }`. Bash: `curl -i http://localhost:3000/api/notes -H 'Content-Type: application/json' -d '{"content":"uji"}'`. Kunci: HTTP **400** karena judul hilang; tidak ada catatan baru. JSON rusak juga HTTP 400. Ini terjadi sebelum request diteruskan ke API Lab 06.
 3. **Simpan dan telusuri request.** Isi formulir browser dengan judul unik, misalnya `Audit catatan kelas`, lalu klik **Simpan**. Catatan muncul di daftar. Kunci terminal: `curl -i http://localhost:3000/api/notes` menghasilkan HTTP 200 dan judul itu; `curl -i -X POST http://localhost:3000/api/notes -H 'Content-Type: application/json' -d '{"title":"Audit API","content":"Jalur lengkap berhasil"}'` menghasilkan HTTP 201 serta header `X-Request-ID`. Cocokkan nilai header itu dengan `requestId` pada baris `notes_proxy` di terminal Next. Pada PowerShell, gunakan `Invoke-WebRequest`/`Invoke-RestMethod` dengan body JSON setara.
 4. **Simulasikan outage secara terkontrol.** Di terminal Lab 06 jalankan `docker compose stop api` (biarkan DB/Redis hidup). `/api/health` Next tetap HTTP 200, `/api/ready` HTTP **503**, `/api/notes` HTTP **503**, dan halaman menampilkan pesan API lokal gagal. Terminal Next mencatat `notes_proxy_unavailable` tanpa isi catatan/password. Pulihkan dengan `docker compose start api`, tunggu `docker compose ps` menunjukkan `healthy`, lalu ulangi `/api/ready` dan daftar catatan; keduanya kembali berhasil. Hanya lakukan simulasi ini pada lingkungan praktik Anda sendiri.
@@ -186,4 +188,4 @@ Kasus: staf menekan **Simpan** tetapi daftar catatan tidak berubah. Tugas Anda m
 
 ![Docker Desktop backend Lab 06 untuk Lab 08](screenshots/08_lab06_docker_desktop.jpg)
 
-*Perintah/tindakan:* dari repo Lab 06 jalankan `docker compose up --build -d --wait`, kemudian buka Docker Desktop. *Fungsi:* memastikan backend tiga service siap sebelum Next. *Cara kerja:* Compose menjalankan API, PostgreSQL, dan Redis pada network internal; API memetakan host port 8000. *Baca hasil:* ketiganya hijau/healthy.
+*Perintah/tindakan:* dari repo Lab 06 jalankan `docker compose up --build -d --wait`, kemudian buka Docker Desktop. *Fungsi:* memastikan backend tiga service siap sebelum Next. *Cara kerja:* Compose menjalankan API, PostgreSQL, dan Redis pada network internal; Screenshot historis menampilkan host port 8000; revisi lokal sekarang memetakan API ke 18006. *Baca hasil:* ketiganya hijau/healthy.
