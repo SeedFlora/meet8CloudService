@@ -1,61 +1,58 @@
-# Lab 08 — Next.js + Vercel + Supabase
-
-<!-- lecture-materials:start -->
-
-## Materi teori sebelum praktikum
-
-- [Pertemuan 08: Vercel](slides/Teori_Pertemuan_08.pptx)
-
-Slide menghubungkan konsep, kasus kerja, bacaan/video resmi, dan langkah lab.
-
-<!-- lecture-materials:end -->
+# Lab 08 — Cloud Notes dengan Next.js lokal
 
 **Kebijakan kelas:** Lab ini latihan formatif, tanpa tugas, nilai, atau penyerahan terpisah. Satu proyek besar dikerjakan oleh kelompok **3 orang**, dengan presentasi checkpoint minggu 7 (UTS) dan hasil akhir minggu 14 (UAS). Simpan hasil lab hanya bila berguna sebagai referensi atau bukti proses proyek. Baca [brief proyek kelompok](PROYEK_KELOMPOK.md). Bobot resmi tetap mengikuti RPS/LMS.
 
-**Capaian:** membangun App Router, membedakan kode browser dan server, membuat Route Handler GET/POST, menghubungkan BaaS memakai publishable key, serta mendemonstrasikan deploy otomatis dari Git. Kode yang sama bisa dicoba tanpa akun cloud.
+Praktik utama memakai **PowerShell, Node 22+, dan Docker Desktop**. Frontend Next.js di port 3000 meneruskan GET/POST melalui Route Handler server ke API Compose Lab 06 di **18006**. Akun cloud tidak diperlukan.
 
-## Jalur lokal tanpa akun
+Mulai dari [modul langkah demi langkah](MODUL_MAHASISWA.md) atau [PDF](MODUL_MAHASISWA.pdf). Modul memisahkan terminal backend, frontend, dan pemeriksaan agar perintah tidak tersangkut di server yang sedang berjalan.
 
-1. Clone [repo Lab 06](https://github.com/SeedFlora/meet6CloudService) di komputer/Codespace **yang sama**, siapkan `.env` dari `.env.example` sesuai README Lab 06, lalu jalankan Compose dari root repo itu (`docker compose up --build -d --wait`). `localhost` pada dua Codespace terpisah tidak saling terhubung.
-2. Dari root repo Lab 08 ini, pastikan Node.js minimal **22.0.0**, lalu:
+## Terminal 1 — backend Lab 06
 
-```bash
+Buka PowerShell di folder tempat menyimpan proyek:
+
+```powershell
+git clone https://github.com/SeedFlora/meet6CloudService.git meet6CloudService-local
+Set-Location .\meet6CloudService-local
+Copy-Item .\.env.example .\.env
+docker compose up --build -d --wait
+docker compose ps
+curl.exe -i http://127.0.0.1:18006/health
+```
+
+Gunakan clone Lab 06 yang sudah sehat dari pertemuan sebelumnya sebagai pengganti clone baru. Pada clone lama, pertahankan `.env` dan volume. Hasil health harus HTTP 200 dan menyebut PostgreSQL serta Redis.
+
+## Terminal 2 — frontend Lab 08
+
+Buka PowerShell baru di folder induk yang sama:
+
+```powershell
+git clone https://github.com/SeedFlora/meet8CloudService.git meet8CloudService-local
+Set-Location .\meet8CloudService-local
 node --version
 npm --version
 npm ci
-cp .env.example .env.local
+Copy-Item .\.env.example .\.env.local
 npm run dev
 ```
 
-Pada PowerShell, ganti baris `cp` dengan `Copy-Item .\.env.example .\.env.local`. Buka `http://localhost:3000`, buat catatan, lalu lihat data lewat `http://127.0.0.1:18006/notes`. Route Handler `/api/notes` meneruskan request ke API Lab 06 dari sisi server, sehingga browser tidak perlu mengakses network Compose langsung.
+Node harus versi **22+**, sesuai seluruh dependensi proyek. Buka <http://localhost:3000>. Buat catatan dan cocokkan hasilnya dengan <http://127.0.0.1:18006/notes>. Biarkan terminal 2 menjalankan Next.js.
 
-Revisi lokal Lab 06 memakai port **18006**. Nilai `LOCAL_API_URL` pada `.env.local` harus `http://127.0.0.1:18006`; contoh baru dan default Route Handler sudah sesuai. Sesuaikan nilai pada `.env.local` yang telah ada, lalu hentikan dan jalankan kembali server Next.js setelah perubahan konfigurasi.
+## Terminal 3 — pemeriksaan
 
-Kebutuhan Node 22+ berasal dari `@supabase/supabase-js` pada `package-lock.json` proyek ini; minimum Next.js saja adalah 20.9+. Lihat [dukungan runtime Supabase](https://supabase.com/changelog/45715-deprecation-notice-dropping-support-for-node-js-20). Periksa `node --version` menunjukkan `v22.0.0` atau lebih baru dan `npm --version` berhasil sebelum `npm ci`. Jika muncul `EBADENGINE`, perbarui runtime lingkungan praktik dan buka kembali terminal sebelum mencoba instalasi lagi.
+Buka terminal pada folder `meet8CloudService-local`:
 
-Uji:
-
-```bash
-npm run check:local
-npm run typecheck
-npm run build
+```powershell
+curl.exe -i http://localhost:3000/api/health
+curl.exe -i http://localhost:3000/api/ready
 ```
 
-## Jalur Supabase
+Keduanya HTTP 200. Health memeriksa Next.js; ready memeriksa API Lab 06. Ikuti modul untuk uji POST, validasi HTTP 400, pembahasan source, typecheck, dan build. Checker tambahan `npm run check:local` membuat satu catatan uji; bukan prasyarat praktik.
 
-Jalankan `schema.sql` dari [repo Lab 07](https://github.com/SeedFlora/meet7CloudService). Isi `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` di `.env.local`, lalu restart `npm run dev`. Daftar, verifikasi email bila diminta, masuk, dan tulis catatan. Bandingkan dua akun: RLS hanya menampilkan data pemilik. Variabel `NEXT_PUBLIC_` memang dibundel ke browser, jadi **hanya** URL dan publishable key boleh berada di sana. Service role/secret key tidak boleh disimpan sebagai `NEXT_PUBLIC_`.
+## Materi pendamping
 
-## Git → Vercel (opsional)
+- [Teori Vercel dan Next.js](slides/Teori_Pertemuan_08.pptx)
+- [Slide praktik lokal](slides/LAB08_Cloud_Notes_Nextjs_Bukti_Live.pptx)
+- [Git opsional ke repo pribadi](PANDUAN_GIT.md)
+- [Proyek kelompok](PROYEK_KELOMPOK.md)
 
-1. Commit repo ke GitHub. Pastikan `.env.local` tidak ikut (`git status`).
-2. Import repo di Vercel; pilih root directory `.`.
-3. Atur environment variables mode Supabase di pengaturan project, lalu deploy. Jangan set `LOCAL_API_URL` ke `localhost` untuk deployment, karena container Lab 06 hanya hidup di laptop. Gunakan Supabase untuk URL publik.
-4. Push perubahan kecil ke branch Git dan amati preview deployment; merge ke branch produksi untuk auto-deploy. Custom domain hanya latihan opsional bila sudah punya domain.
-
-**Bukti:** screenshot UI lokal dan `/api/health`, response GET/POST Route Handler, commit Git, serta URL preview/produksi bila ada. Diskusikan SSR/SSG/ISR dan Server/Client Components; halaman ini sengaja memakai Client Component untuk form dan Auth. Route Handler serta logger berjalan di server.
-
-Rujukan: [Next.js installation](https://nextjs.org/docs/app/getting-started/installation), [Route Handlers](https://nextjs.org/docs/app/getting-started/route-handlers), [Vercel Git deployment](https://vercel.com/docs/git), [Supabase frontend security](https://supabase.com/docs/guides/database/secure-data).
-
-`npm run check:local` memerlukan Next.js dan API Lab 06 aktif; jalankan pada terminal kedua sebelum menghentikan `npm run dev`. Hasil uji lokal: **9 PASS, 0 FAIL**. `/api/health` memeriksa Next saja; `/api/ready` ikut memeriksa kesehatan Lab 06. Gunakan `http://localhost:3000` untuk browser dev lokal.
-
-Panduan: [modul mahasiswa dan kunci](MODUL_MAHASISWA.md), [panduan Git](PANDUAN_GIT.md). Screenshot ada di `screenshots/`; laporan pribadi memakai `hasil/TEMPLATE_LAPORAN.md`.
+Bagian tambahan modul menjelaskan Supabase dan Git deployment ke Vercel. `.env.local` berada pada root repo, `LOCAL_API_URL` hanya dipakai server, sedangkan `NEXT_PUBLIC_SUPABASE_*` terlihat di browser. Gunakan hanya URL dan publishable key pada `NEXT_PUBLIC_`; service role/secret key tidak boleh berada di sana. Restart server sesudah mengubah konfigurasi.
