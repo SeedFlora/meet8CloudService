@@ -48,6 +48,27 @@ curl.exe -i http://localhost:3000/api/ready
 
 Keduanya HTTP 200. Health memeriksa Next.js; ready memeriksa API Lab 06. Ikuti modul untuk uji POST, validasi HTTP 400, pembahasan source, typecheck, dan build. Checker tambahan `npm run check:local` membuat satu catatan uji; bukan prasyarat praktik.
 
+## Tambahan: proxy model AI tanpa GPU (`/api/ai`)
+
+Route Handler `src/app/api/ai/route.ts` meneruskan prompt dari browser ke provider **OpenAI-compatible**. Token hanya dibaca server dari environment, sehingga tidak pernah terkirim ke browser. Isi tiga variabel di `.env.local` (tanpa prefix `NEXT_PUBLIC_`), lalu restart server:
+
+| Provider | `AI_BASE_URL` | Catatan |
+|---|---|---|
+| Ollama lokal | `http://127.0.0.1:11434/v1` | gratis dan offline, `AI_API_KEY` dikosongkan; contoh `AI_MODEL=hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:Q4_K_M` |
+| Hugging Face Inference Providers | `https://router.huggingface.co/v1` | token HF; akun free perlu membeli kredit |
+| Groq | `https://api.groq.com/openai/v1` | free tier dengan rate limit |
+| Google Gemini | `https://generativelanguage.googleapis.com/v1beta/openai` | free tier untuk model tertentu |
+| Cloudflare Workers AI | `https://api.cloudflare.com/client/v4/accounts/<ACCOUNT_ID>/ai/v1` | 10.000 neurons/hari gratis |
+
+Uji dari PowerShell (terminal 3):
+
+```powershell
+Invoke-RestMethod http://127.0.0.1:3000/api/ai -Method Post -ContentType "application/json" -Body '{"prompt":"Apa itu Docker?"}'
+node tests/ai-proxy.mjs
+```
+
+Kode status: `200` jawaban, `400` prompt kosong/JSON rusak, `502` provider menolak, `503` variabel belum diisi, `504` provider tidak terjangkau atau timeout 20 detik. Di Vercel, isi variabel yang sama pada **Settings → Environment Variables**; deployment Vercel tidak dapat menjangkau Ollama di laptop. Diuji 16 November 2026 dengan `next build` dan server mock OpenAI-compatible; `tests/challenge.mjs` tetap 9 PASS.
+
 ## Materi pendamping
 
 - [Teori Vercel dan Next.js](slides/Teori_Pertemuan_08.pptx)
