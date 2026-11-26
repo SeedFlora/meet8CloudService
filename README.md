@@ -2,6 +2,8 @@
 
 **Kelas BA75 dan BB75 memakai Docker lokal atau GitHub Codespaces.** Mulai dari [README branch praktikum](https://github.com/SeedFlora/meet8CloudService/tree/lab08-docker-codespaces#readme). Untuk mengganti judul, tombol, warna, dan nama tab, langsung buka [latihan modifikasi Cloud Notes](https://github.com/SeedFlora/meet8CloudService/blob/lab08-docker-codespaces/README.md#modifikasi-halaman-cloud-notes). Jalur Node.js manual tersedia di bawah.
 
+Untuk memulai **Prometheus dan Grafana**, ikuti [panduan monitoring dari nol untuk Docker lokal dan GitHub Codespaces](https://github.com/SeedFlora/meet8CloudService/blob/lab08-docker-codespaces/README.md#monitoring-cloud-notes). Kamu akan menyimpan catatan, melihat grafiknya, lalu [membuat metrik satu menit dan panel sendiri](https://github.com/SeedFlora/meet8CloudService/blob/lab08-docker-codespaces/README.md#metrik-satu-menit).
+
 **Kebijakan kelas:** Lab ini latihan formatif, tanpa tugas, nilai, atau penyerahan terpisah. Satu proyek besar dikerjakan oleh kelompok **3 orang**, dengan presentasi checkpoint minggu 7 (UTS) dan hasil akhir minggu 14 (UAS). Simpan hasil lab hanya bila berguna sebagai referensi atau bukti proses proyek. Baca [brief proyek kelompok](PROYEK_KELOMPOK.md). Bobot resmi tetap mengikuti RPS/LMS.
 
 Praktik utama memakai **PowerShell, Node 22+, dan Docker Desktop**. Frontend Next.js di port 3000 meneruskan GET/POST melalui Route Handler server ke API Compose Lab 06 di **18006**. Akun cloud tidak diperlukan.
